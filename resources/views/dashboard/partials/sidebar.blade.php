@@ -7,8 +7,8 @@
                     <div class="sb-nav-link-icon"><i class="bi bi-diamond-fill"></i></div>
                     Dashboard
                 </a>
-                <div class="sb-sidenav-menu-heading">Data</div>
                 @can('isAdmin')
+                <div class="sb-sidenav-menu-heading">Data</div>
                 <a class="nav-link {{ Request::is('dashboard/users') ? 'active' : '' }}"
                     href="{{ route('users.index') }}">
                     <div class="sb-nav-link-icon"><i class="bi bi-person-badge-fill"></i></div>
@@ -37,8 +37,8 @@
                     Obat
                 </a>
                 @endcan
-                <div class="sb-sidenav-menu-heading">Transaksi</div>
                 @can('isPetugasPendaftaran')
+                <div class="sb-sidenav-menu-heading">Transaksi</div>
                 <a class="nav-link {{ Request::is('dashboard/patients') ? 'active' : '' }}"
                     href="{{ route('patients.index') }}">
                     <div class="sb-nav-link-icon"><i class="bi bi-person-lines-fill"></i></div>
@@ -51,6 +51,7 @@
                 </a>
                 @endcan
                 @can('isDokter')
+                <div class="sb-sidenav-menu-heading">Transaksi</div>
                 <a class="nav-link {{ Request::is('dashboard/medicalrecords') ? 'active' : '' }}"
                     href="{{ route('medicalrecords.index') }}">
                     <div class="sb-nav-link-icon"><i class="bi bi-prescription2"></i></div>
@@ -58,6 +59,7 @@
                 </a>
                 @endcan
                 @can('isKasir')
+                <div class="sb-sidenav-menu-heading">Transaksi</div>
                 <a class="nav-link {{ Request::is('dashboard/payments') ? 'active' : '' }}"
                     href="{{ route('payments.index') }}">
                     <div class="sb-nav-link-icon"><i class="bi bi-receipt-cutoff"></i></div>
