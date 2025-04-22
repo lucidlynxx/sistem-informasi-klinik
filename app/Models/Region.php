@@ -17,7 +17,7 @@ class Region extends Model
         return 'slug';
     }
 
-    public function patient(): HasMany
+    public function patients(): HasMany
     {
         return $this->hasMany(Patient::class);
     }
