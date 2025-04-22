@@ -47,8 +47,10 @@
                                     @csrf
                                     <input type="hidden" class="form-control" id="slug" name="slug"
                                         value="{{ $payment->slug }}" required>
+                                    @if ($payment->status == 'belum lunas')
                                     <button type="submit" class="btn btn-success btn-sm">
                                         Selesaikan Transaksi</button>
+                                    @endif
                                 </form>
                             </td>
                         </tr>
