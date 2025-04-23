@@ -104,9 +104,9 @@
                             @enderror
 
                             <div class="mt-3">
-                                <button type="submit" class="btn btn-primary"><i class="bi bi-sd-card-fill"></i>
+                                <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-sd-card-fill"></i>
                                     Tambah & tambah lagi</button>
-                                <a href="{{ route('users.index') }}" class="btn btn-danger"><i
+                                <a href="{{ route('users.index') }}" class="btn btn-danger btn-sm"><i
                                         class="bi bi-x-circle"></i> Batal</a>
                             </div>
                         </div>
