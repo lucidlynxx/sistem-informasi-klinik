@@ -89,9 +89,11 @@ class MedicalRecordController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(MedicalRecord $medicalRecord)
+    public function show(MedicalRecord $medicalrecord)
     {
-        //
+        $title = 'Show Medical Record';
+
+        return view('dashboard.medicalrecord.show', compact('title', 'medicalrecord'));
     }
 
     /**
@@ -142,13 +144,5 @@ class MedicalRecordController extends Controller
         alert()->success('Ubah Data Sukses!', 'Data Layanan Medis telah diubah.');
 
         return redirect()->route('medicalrecords.index');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(MedicalRecord $medicalRecord)
-    {
-        //
     }
 }

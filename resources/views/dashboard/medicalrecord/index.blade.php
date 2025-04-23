@@ -43,7 +43,7 @@
                             <td>{{ $meds->diagnosa }}</td>
                             <td>
                                 <div class="btn-group-sm" role="group">
-                                    <a href="{{ route('medicalrecords.edit', $meds->slug) }}" class="btn btn-success"><i
+                                    <a href="{{ route('medicalrecords.show', $meds->slug) }}" class="btn btn-success"><i
                                             class="bi bi-eye-fill"></i>
                                         Detail</a>
                                     <a href="{{ route('medicalrecords.edit', $meds->slug) }}" class="btn btn-warning"><i
