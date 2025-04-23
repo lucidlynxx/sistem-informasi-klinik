@@ -65,7 +65,9 @@ class PatientController extends Controller
      */
     public function show(Patient $patient)
     {
-        //
+        $title = 'Show Patient';
+
+        return view('dashboard.patient.show', compact('title', 'patient'));
     }
 
     /**
@@ -117,13 +119,5 @@ class PatientController extends Controller
         alert()->success('Ubah Data Sukses!', 'Data Pasien telah diubah.');
 
         return redirect()->route('patients.index');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Patient $patient)
-    {
-        //
     }
 }

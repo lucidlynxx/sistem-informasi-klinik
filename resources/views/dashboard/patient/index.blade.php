@@ -45,7 +45,7 @@
                             <td>{{ Str::mask($patient->no_hp, '*', -6) }}</td>
                             <td>
                                 <div class="btn-group-sm" role="group">
-                                    <a href="{{ route('patients.edit', $patient->slug) }}" class="btn btn-success"><i
+                                    <a href="{{ route('patients.show', $patient->slug) }}" class="btn btn-success"><i
                                             class="bi bi-eye-fill"></i>
                                         Detail</a>
                                     <a href="{{ route('patients.edit', $patient->slug) }}" class="btn btn-warning"><i
