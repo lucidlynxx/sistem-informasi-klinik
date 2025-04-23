@@ -62,7 +62,9 @@ class EmployeeController extends Controller
      */
     public function show(Employee $employee)
     {
-        //
+        $title = 'Show Employee';
+
+        return view('dashboard.employee.show', compact('title', 'employee'));
     }
 
     /**
@@ -110,13 +112,5 @@ class EmployeeController extends Controller
         alert()->success('Ubah Data Sukses!', 'Data Pegawai telah diubah.');
 
         return redirect()->route('employees.index');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Employee $employee)
-    {
-        //
     }
 }
