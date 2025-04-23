@@ -26,6 +26,7 @@
                 </a>
                 @endcan
                 @can('isDokter')
+                <div class="sb-sidenav-menu-heading">Data</div>
                 <a class="nav-link {{ Request::is('dashboard/actions') ? 'active' : '' }}"
                     href="{{ route('actions.index') }}">
                     <div class="sb-nav-link-icon"><i class="bi bi-activity"></i></div>

@@ -30,7 +30,6 @@
                             <th>Tindakan</th>
                             <th>Obat</th>
                             <th>Diagnosa</th>
-                            <th>Catatan</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -42,9 +41,11 @@
                             <td>{{ $meds->action->tindakan }}</td>
                             <td>{{ $meds->medicine->nama_obat }}</td>
                             <td>{{ $meds->diagnosa }}</td>
-                            <td>{{ $meds->catatan }}</td>
                             <td>
                                 <div class="btn-group-sm" role="group">
+                                    <a href="{{ route('medicalrecords.edit', $meds->slug) }}" class="btn btn-success"><i
+                                            class="bi bi-eye-fill"></i>
+                                        Detail</a>
                                     <a href="{{ route('medicalrecords.edit', $meds->slug) }}" class="btn btn-warning"><i
                                             class="bi bi-pen"></i>
                                         Ubah</a>
@@ -61,7 +62,6 @@
                             <th>Tindakan</th>
                             <th>Obat</th>
                             <th>Diagnosa</th>
-                            <th>Catatan</th>
                             <th>Aksi</th>
                         </tr>
                     </tfoot>

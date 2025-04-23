@@ -27,9 +27,8 @@
                         <tr>
                             <th>No</th>
                             <th>Nama</th>
-                            <th>NIP</th>
                             <th>Jabatan</th>
-                            <th>Alamat</th>
+                            <th>NIP</th>
                             <th>No Hp</th>
                             <th>Aksi</th>
                         </tr>
@@ -39,12 +38,14 @@
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $employee->nama }}</td>
-                            <td>{{ $employee->nip }}</td>
                             <td>{{ $employee->jabatan }}</td>
-                            <td>{{ $employee->alamat }}</td>
-                            <td>{{ $employee->no_hp }}</td>
+                            <td>{{ Str::mask($employee->nip, '*', -8) }}</td>
+                            <td>{{ Str::mask($employee->no_hp, '*', -6) }}</td>
                             <td>
                                 <div class="btn-group-sm" role="group">
+                                    <a href="{{ route('employees.edit', $employee->slug) }}" class="btn btn-success"><i
+                                            class="bi bi-eye-fill"></i>
+                                        Detail</a>
                                     <a href="{{ route('employees.edit', $employee->slug) }}" class="btn btn-warning"><i
                                             class="bi bi-pen"></i>
                                         Ubah</a>
@@ -58,9 +59,8 @@
                         <tr>
                             <th>No</th>
                             <th>Nama</th>
-                            <th>NIP</th>
                             <th>Jabatan</th>
-                            <th>Alamat</th>
+                            <th>NIP</th>
                             <th>No Hp</th>
                             <th>Aksi</th>
                         </tr>

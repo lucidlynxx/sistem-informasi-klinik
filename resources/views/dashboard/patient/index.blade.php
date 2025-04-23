@@ -27,10 +27,8 @@
                         <tr>
                             <th>No</th>
                             <th>Name</th>
-                            <th>NIK</th>
                             <th>Tgl Lahir</th>
                             <th>Gender</th>
-                            <th>Alamat</th>
                             <th>Wilayah</th>
                             <th>No Hp</th>
                             <th>Aksi</th>
@@ -41,14 +39,15 @@
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $patient->name }}</td>
-                            <td>{{ $patient->nik }}</td>
-                            <td>{{ $patient->tanggal_lahir }}</td>
+                            <td>{{ date('d M Y', strtotime($patient->tanggal_lahir)); }}</td>
                             <td>{{ $patient->jenis_kelamin }}</td>
-                            <td>{{ $patient->alamat }}</td>
                             <td>{{ $patient->region->kota_kabupaten }}</td>
-                            <td>{{ $patient->no_hp }}</td>
+                            <td>{{ Str::mask($patient->no_hp, '*', -6) }}</td>
                             <td>
                                 <div class="btn-group-sm" role="group">
+                                    <a href="{{ route('patients.edit', $patient->slug) }}" class="btn btn-success"><i
+                                            class="bi bi-eye-fill"></i>
+                                        Detail</a>
                                     <a href="{{ route('patients.edit', $patient->slug) }}" class="btn btn-warning"><i
                                             class="bi bi-pen"></i>
                                         Ubah</a>
@@ -62,10 +61,8 @@
                         <tr>
                             <th>No</th>
                             <th>Name</th>
-                            <th>NIK</th>
                             <th>Tgl Lahir</th>
                             <th>Gender</th>
-                            <th>Alamat</th>
                             <th>Wilayah</th>
                             <th>No Hp</th>
                             <th>Aksi</th>

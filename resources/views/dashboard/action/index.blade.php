@@ -27,7 +27,6 @@
                             <th>No</th>
                             <th>Tindakan</th>
                             <th>Biaya</th>
-                            <th>Keterangan</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -37,7 +36,6 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $action->tindakan }}</td>
                             <td>Rp{{ number_format($action->biaya, 0, ',', '.') }}</td>
-                            <td>{{ $action->keterangan }}</td>
                             <td>
                                 <div class="btn-group-sm" role="group">
                                     <a href="{{ route('actions.edit', $action->slug) }}" class="btn btn-warning"><i
@@ -54,7 +52,6 @@
                             <th>No</th>
                             <th>Tindakan</th>
                             <th>Biaya</th>
-                            <th>Keterangan</th>
                             <th>Aksi</th>
                         </tr>
                     </tfoot>

@@ -27,6 +27,7 @@
                         <tr>
                             <th>No</th>
                             <th>Pasien</th>
+                            <th>Wilayah</th>
                             <th>Kunjungan</th>
                             <th>Tgl Daftar</th>
                             <th>Status</th>
@@ -38,11 +39,15 @@
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $registration->patient->name }}</td>
+                            <td>{{ $registration->patient->region->kota_kabupaten }}</td>
                             <td>{{ $registration->jenis_kunjungan }}</td>
-                            <td>{{ $registration->tanggal_daftar }}</td>
+                            <td>{{ date('d M y', strtotime($registration->tanggal_daftar)); }}</td>
                             <td>{{ $registration->status }}</td>
                             <td>
                                 <div class="btn-group-sm" role="group">
+                                    <a href="{{ route('registrations.edit', $registration->slug) }}"
+                                        class="btn btn-success"><i class="bi bi-eye-fill"></i>
+                                        Detail</a>
                                     <a href="{{ route('registrations.edit', $registration->slug) }}"
                                         class="btn btn-warning"><i class="bi bi-pen"></i>
                                         Ubah</a>
@@ -56,6 +61,7 @@
                         <tr>
                             <th>No</th>
                             <th>Pasien</th>
+                            <th>Wilayah</th>
                             <th>Kunjungan</th>
                             <th>Tgl Daftar</th>
                             <th>Status</th>
