@@ -53,7 +53,7 @@
                                     @elseif ($payment->status == 'lunas')
                                     <a href="{{ route('payments.print', $payment->slug) }}" target="_blank"
                                         class="btn btn-primary btn-sm">Cetak
-                                        Invoice</a>
+                                        Receipt</a>
                                     @endif
                                 </div>
                             </td>
