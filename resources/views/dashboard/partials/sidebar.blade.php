@@ -4,7 +4,7 @@
             <div class="nav">
                 <div class="sb-sidenav-menu-heading">Core</div>
                 <a class="nav-link {{ Request::is('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
-                    <div class="sb-nav-link-icon"><i class="bi bi-diamond-fill"></i></div>
+                    <div class="sb-nav-link-icon"><i class="bi bi-columns-gap"></i></div>
                     Dashboard
                 </a>
                 @can('isAdmin')
@@ -42,7 +42,7 @@
                 <div class="sb-sidenav-menu-heading">Transaksi</div>
                 <a class="nav-link {{ Request::is('dashboard/patients') ? 'active' : '' }}"
                     href="{{ route('patients.index') }}">
-                    <div class="sb-nav-link-icon"><i class="bi bi-person-lines-fill"></i></div>
+                    <div class="sb-nav-link-icon"><i class="bi bi-person-fill-check"></i></div>
                     Pasien
                 </a>
                 <a class="nav-link {{ Request::is('dashboard/registrations') ? 'active' : '' }}"
