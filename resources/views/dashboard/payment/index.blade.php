@@ -21,9 +21,7 @@
                             <th>No</th>
                             <th>Pasien</th>
                             <th>Layanan</th>
-                            <th>Biaya</th>
                             <th>Obat</th>
-                            <th>Harga</th>
                             <th>Total</th>
                             <th>Status</th>
                             <th>Aksi</th>
@@ -34,24 +32,30 @@
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $payment->medicalrecord->registration->patient->name }}</td>
-                            <td>{{ $payment->medicalrecord->action->tindakan }}</td>
-                            <td>Rp{{ number_format($payment->medicalrecord->action->biaya, 0, ',', '.') }}</td>
-                            <td>{{ $payment->medicalrecord->medicine->nama_obat }}</td>
-                            <td>Rp{{ number_format($payment->medicalrecord->medicine->harga, 0, ',', '.') }}</td>
+                            <td>{{ $payment->medicalrecord->action->tindakan }} (Rp{{
+                                number_format($payment->medicalrecord->action->biaya, 0, ',', '.') }})</td>
+                            <td>{{ $payment->medicalrecord->medicine->nama_obat }} (Rp{{
+                                number_format($payment->medicalrecord->medicine->harga, 0, ',', '.') }})</td>
                             <td>Rp{{ number_format($payment->total, 0, ',', '.') }}</td>
                             <td>{{ $payment->status }}</td>
                             <td>
-                                <form action="{{ route('payments.update', $payment->slug) }}" method="POST"
-                                    enctype="multipart/form-data">
-                                    @method('put')
-                                    @csrf
-                                    <input type="hidden" class="form-control" id="slug" name="slug"
-                                        value="{{ $payment->slug }}" required>
+                                <div class="btn-group-sm" role="group">
                                     @if ($payment->status == 'belum lunas')
-                                    <button type="submit" class="btn btn-success btn-sm">
-                                        Selesaikan Transaksi</button>
+                                    <form action="{{ route('payments.update', $payment->slug) }}" method="POST"
+                                        enctype="multipart/form-data">
+                                        @method('put')
+                                        @csrf
+                                        <input type="hidden" class="form-control" id="slug" name="slug"
+                                            value="{{ $payment->slug }}" required>
+                                        <button type="submit" class="btn btn-success btn-sm">
+                                            Selesaikan Transaksi</button>
+                                    </form>
+                                    @elseif ($payment->status == 'lunas')
+                                    <a href="{{ route('payments.print', $payment->slug) }}" target="_blank"
+                                        class="btn btn-primary btn-sm">Cetak
+                                        Invoice</a>
                                     @endif
-                                </form>
+                                </div>
                             </td>
                         </tr>
                         @endforeach
@@ -61,9 +65,7 @@
                             <th>No</th>
                             <th>Pasien</th>
                             <th>Layanan</th>
-                            <th>Biaya</th>
                             <th>Obat</th>
-                            <th>Harga</th>
                             <th>Total</th>
                             <th>Status</th>
                             <th>Aksi</th>

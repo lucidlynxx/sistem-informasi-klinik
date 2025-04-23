@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\MedicalRecord;
 use App\Models\Payment;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -86,5 +86,16 @@ class PaymentController extends Controller
     public function destroy(Payment $payment)
     {
         //
+    }
+
+    public function printPayment(Payment $payment)
+    {
+        $paymentData = Payment::find($payment->id);
+
+        $customPaper = array(0, 0, 250, 400);
+
+        $pdf = PDF::loadview('dashboard.payment.printpayment', ['payment' => $paymentData])->setPaper($customPaper, 'portrait');
+
+        return $pdf->stream();
     }
 }
