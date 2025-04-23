@@ -45,7 +45,7 @@
                             <td>{{ $registration->status }}</td>
                             <td>
                                 <div class="btn-group-sm" role="group">
-                                    <a href="{{ route('registrations.edit', $registration->slug) }}"
+                                    <a href="{{ route('registrations.show', $registration->slug) }}"
                                         class="btn btn-success"><i class="bi bi-eye-fill"></i>
                                         Detail</a>
                                     <a href="{{ route('registrations.edit', $registration->slug) }}"

@@ -65,7 +65,9 @@ class RegistrationController extends Controller
      */
     public function show(Registration $registration)
     {
-        //
+        $title = 'Show Registration';
+
+        return view('dashboard.registration.show', compact('title', 'registration'));
     }
 
     /**
@@ -113,13 +115,5 @@ class RegistrationController extends Controller
         alert()->success('Ubah Data Sukses!', 'Data Pendaftaran telah diubah.');
 
         return redirect()->route('registrations.index');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Registration $registration)
-    {
-        //
     }
 }
