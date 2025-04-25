@@ -50,6 +50,7 @@
     @livewireScripts
     @stack('slug')
     @stack('delete')
+    @stack('chart')
 </body>
 
 </html>
