@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Action;
 use App\Models\Employee;
 use App\Models\Patient;
 use App\Models\Registration;
@@ -32,13 +33,22 @@ class DashboardController extends Controller
             ->orderBy('tanggal_daftar', 'asc')
             ->get('tanggal_daftar');
 
+        $actionsData = Action::withCount('medicalrecords')
+            ->has('medicalrecords')
+            ->get()
+            ->map(function ($action) {
+                return [$action->tindakan, $action->medicalrecords_count];
+            })
+            ->toArray();
+
         return view('dashboard.index', compact(
             'title',
             'totalPatients',
             'totalEmployees',
             'totalRegistrations',
             'totalRegistrationsWaitingStatus',
-            'registrationsDate'
+            'registrationsDate',
+            'actionsData'
         ));
     }
 }
