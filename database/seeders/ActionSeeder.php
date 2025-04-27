@@ -15,73 +15,143 @@ class ActionSeeder extends Seeder
     public function run(): void
     {
         Action::factory()->create([
-            'tindakan' => 'Pemeriksaan Umum',
+            'tindakan' => 'Cek Tekanan Darah',
             'slug' => Str::random(10),
-            'biaya' => 50000,
-            'keterangan' => 'Pemeriksaan kondisi umum pasien oleh dokter umum.',
+            'biaya' => 25000,
+            'keterangan' => 'Pengukuran tekanan darah pasien menggunakan tensimeter.',
         ]);
 
         Action::factory()->create([
-            'tindakan' => 'Suntik Vitamin C',
+            'tindakan' => 'Pemeriksaan Mata',
             'slug' => Str::random(10),
-            'biaya' => 75000,
-            'keterangan' => 'Penyuntikan vitamin C untuk meningkatkan daya tahan tubuh.',
+            'biaya' => 80000,
+            'keterangan' => 'Pemeriksaan penglihatan dan kesehatan mata.',
         ]);
 
         Action::factory()->create([
-            'tindakan' => 'Nebulizer',
-            'slug' => Str::random(10),
-            'biaya' => 60000,
-            'keterangan' => 'Terapi uap untuk pasien dengan gangguan pernapasan.',
-        ]);
-
-        Action::factory()->create([
-            'tindakan' => 'Pemasangan Infus',
+            'tindakan' => 'Pemeriksaan THT',
             'slug' => Str::random(10),
             'biaya' => 85000,
-            'keterangan' => 'Tindakan medis untuk memasang cairan infus.',
+            'keterangan' => 'Pemeriksaan kesehatan telinga, hidung, dan tenggorokan.',
         ]);
 
         Action::factory()->create([
-            'tindakan' => 'EKG (Elektrokardiogram)',
+            'tindakan' => 'Pemberian Obat Injeksi',
+            'slug' => Str::random(10),
+            'biaya' => 70000,
+            'keterangan' => 'Pemberian obat melalui injeksi.',
+        ]);
+
+        Action::factory()->create([
+            'tindakan' => 'Terapi Fisioterapi',
+            'slug' => Str::random(10),
+            'biaya' => 130000,
+            'keterangan' => 'Terapi fisik untuk rehabilitasi pasien.',
+        ]);
+
+        Action::factory()->create([
+            'tindakan' => 'Pemasangan Gips',
+            'slug' => Str::random(10),
+            'biaya' => 180000,
+            'keterangan' => 'Tindakan medis untuk imobilisasi tulang yang patah.',
+        ]);
+
+        Action::factory()->create([
+            'tindakan' => 'USG (Ultrasonografi)',
+            'slug' => Str::random(10),
+            'biaya' => 250000,
+            'keterangan' => 'Pemeriksaan organ dalam menggunakan gelombang ultrasonik.',
+        ]);
+
+        Action::factory()->create([
+            'tindakan' => 'Pemeriksaan Kehamilan',
+            'slug' => Str::random(10),
+            'biaya' => 100000,
+            'keterangan' => 'Pemeriksaan kesehatan ibu hamil dan janin.',
+        ]);
+
+        Action::factory()->create([
+            'tindakan' => 'Pemberian Vaksinasi',
             'slug' => Str::random(10),
             'biaya' => 120000,
-            'keterangan' => 'Pemeriksaan jantung menggunakan alat EKG.',
+            'keterangan' => 'Pemberian vaksin untuk pencegahan penyakit.',
         ]);
 
         Action::factory()->create([
-            'tindakan' => 'Pembersihan Luka',
+            'tindakan' => 'Penjahitan Luka',
             'slug' => Str::random(10),
-            'biaya' => 45000,
-            'keterangan' => 'Tindakan membersihkan luka ringan sampai sedang.',
+            'biaya' => 90000,
+            'keterangan' => 'Tindakan medis untuk menjahit luka robek.',
         ]);
 
         Action::factory()->create([
-            'tindakan' => 'Pemeriksaan Laboratorium Darah',
+            'tindakan' => 'Perawatan Luka Diabetes',
             'slug' => Str::random(10),
-            'biaya' => 150000,
-            'keterangan' => 'Tes darah lengkap untuk mengecek kesehatan pasien.',
+            'biaya' => 110000,
+            'keterangan' => 'Perawatan luka khusus untuk pasien diabetes.',
         ]);
 
         Action::factory()->create([
-            'tindakan' => 'Pemeriksaan Gula Darah',
+            'tindakan' => 'Pemberian Nebulizer Anak',
             'slug' => Str::random(10),
-            'biaya' => 30000,
-            'keterangan' => 'Cek kadar gula darah menggunakan alat glucometer.',
+            'biaya' => 65000,
+            'keterangan' => 'Terapi uap untuk anak-anak dengan gangguan pernapasan.',
         ]);
 
         Action::factory()->create([
-            'tindakan' => 'Konsultasi Dokter Spesialis',
+            'tindakan' => 'Terapi Inhalasi',
             'slug' => Str::random(10),
-            'biaya' => 200000,
-            'keterangan' => 'Konsultasi lanjutan dengan dokter spesialis.',
+            'biaya' => 70000,
+            'keterangan' => 'Pemberian obat lewat inhalasi untuk penyakit saluran napas.',
         ]);
 
         Action::factory()->create([
-            'tindakan' => 'Pemasangan Kateter',
+            'tindakan' => 'Pemeriksaan Kolesterol',
+            'slug' => Str::random(10),
+            'biaya' => 40000,
+            'keterangan' => 'Cek kadar kolesterol dalam darah.',
+        ]);
+
+        Action::factory()->create([
+            'tindakan' => 'Cek Asam Urat',
+            'slug' => Str::random(10),
+            'biaya' => 35000,
+            'keterangan' => 'Tes untuk mengetahui kadar asam urat dalam darah.',
+        ]);
+
+        Action::factory()->create([
+            'tindakan' => 'Pemberian Infus Vitamin',
+            'slug' => Str::random(10),
+            'biaya' => 100000,
+            'keterangan' => 'Pemasangan infus untuk pemberian vitamin langsung ke darah.',
+        ]);
+
+        Action::factory()->create([
+            'tindakan' => 'Pemeriksaan Paru-paru',
             'slug' => Str::random(10),
             'biaya' => 95000,
-            'keterangan' => 'Tindakan pemasangan alat bantu buang air kecil.',
+            'keterangan' => 'Pemeriksaan kesehatan paru-paru.',
+        ]);
+
+        Action::factory()->create([
+            'tindakan' => 'Pemeriksaan Ginjal',
+            'slug' => Str::random(10),
+            'biaya' => 150000,
+            'keterangan' => 'Pemeriksaan fungsi ginjal melalui laboratorium.',
+        ]);
+
+        Action::factory()->create([
+            'tindakan' => 'Pemasangan NGT (Nasogastric Tube)',
+            'slug' => Str::random(10),
+            'biaya' => 115000,
+            'keterangan' => 'Pemasangan selang makan lewat hidung.',
+        ]);
+
+        Action::factory()->create([
+            'tindakan' => 'Pemeriksaan HIV/AIDS',
+            'slug' => Str::random(10),
+            'biaya' => 200000,
+            'keterangan' => 'Tes darah untuk mendeteksi HIV/AIDS.',
         ]);
     }
 }

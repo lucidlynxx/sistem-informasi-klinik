@@ -3,6 +3,9 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\MedicalRecord;
+use App\Models\Registration;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -23,5 +26,8 @@ class DatabaseSeeder extends Seeder
             RegistrationSeeder::class,
             MedicalRecordSeeder::class
         ]);
+
+        Registration::factory(100)->create();
+        MedicalRecord::factory(100)->create();
     }
 }
