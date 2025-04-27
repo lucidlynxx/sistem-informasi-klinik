@@ -39,8 +39,8 @@ var myLineChart = new Chart(ctx, {
       yAxes: [{
         ticks: {
           min: 0,
-          // menghitung total dari array
-          max: registrationTotalArray.reduce((acc, curr) => acc + curr, 0),
+          // menghitung total dari array dan membaginya menjadi 4
+          max: registrationTotalArray.reduce((acc, curr) => acc + curr, 0) / 4,
           maxTicksLimit: 5
         },
         gridLines: {

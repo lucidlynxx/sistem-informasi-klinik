@@ -37,7 +37,7 @@ class DashboardController extends Controller
         $actionsData = Action::withCount('medicalrecords')
             ->has('medicalrecords')
             ->orderByDesc('medicalrecords_count')
-            ->take(10)
+            ->take(6)
             ->get()
             ->map(function ($action) {
                 return [$action->tindakan, $action->medicalrecords_count];
