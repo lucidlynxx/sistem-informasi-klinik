@@ -7,10 +7,21 @@ var ctx = document.getElementById("myPieChart");
 var myPieChart = new Chart(ctx, {
   type: 'pie',
   data: {
-    labels: ["Paracetamol", "Amoxilin", "Ibuprofen", "Metformin"],
+    labels: medicines,
     datasets: [{
-      data: [12.21, 15.58, 11.25, 8.32],
-      backgroundColor: ['#007bff', '#dc3545', '#ffc107', '#28a745'],
+      data: totalMedicines,
+      backgroundColor: [
+        '#007bff', // biru
+        '#dc3545', // merah
+        '#ffc107', // kuning
+        '#28a745', // hijau
+        '#17a2b8', // cyan
+        '#6f42c1', // ungu
+        '#fd7e14', // oranye
+        '#20c997', // teal
+        '#6610f2', // biru tua
+        '#e83e8c'  // pink
+      ],
     }],
   },
 });

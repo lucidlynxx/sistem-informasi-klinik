@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Action;
 use App\Models\Employee;
+use App\Models\Medicine;
 use App\Models\Patient;
 use App\Models\Registration;
 use Carbon\Carbon;
@@ -43,6 +44,16 @@ class DashboardController extends Controller
             })
             ->toArray();
 
+        $medicinesData = Medicine::withCount('medicalrecords')
+            ->has('medicalrecords')
+            ->orderByDesc('medicalrecords_count')
+            ->take(10)
+            ->get()
+            ->map(function ($action) {
+                return [$action->nama_obat, $action->medicalrecords_count];
+            })
+            ->toArray();
+
         return view('dashboard.index', compact(
             'title',
             'totalPatients',
@@ -50,7 +61,8 @@ class DashboardController extends Controller
             'totalRegistrations',
             'totalRegistrationsWaitingStatus',
             'registrationsDate',
-            'actionsData'
+            'actionsData',
+            'medicinesData',
         ));
     }
 }

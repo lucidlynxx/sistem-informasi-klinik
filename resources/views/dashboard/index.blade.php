@@ -134,6 +134,10 @@
     let actionsData = @json($actionsData);
     const actions = actionsData.map(data => data[0]);
     const totalActions = actionsData.map(data => data[1]);
+
+    let medicinesData = @json($medicinesData);
+    const medicines = medicinesData.map(data => data[0]);
+    const totalMedicines = medicinesData.map(data => data[1]);
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
 <script src="/js/chart-area-demo.js"></script>
