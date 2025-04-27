@@ -25,7 +25,7 @@ class RegistrationFactory extends Factory
                 'Kontrol Rutin',
             ]),
             'slug' => Str::random(8),
-            'tanggal_daftar' => $this->faker->dateTimeBetween('-7 days', 'now'), // ini acak 7 hari terakhir
+            'tanggal_daftar' => $this->faker->dateTimeBetween('-6 days', 'now'), // ini acak 6 hari terakhir
             'status' => $this->faker->randomElement(['selesai', 'menunggu']),
         ];
     }
