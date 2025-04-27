@@ -6,21 +6,12 @@ use App\Http\Requests\MedicalRecordStoreRequest;
 use App\Models\Action;
 use App\Models\MedicalRecord;
 use App\Models\Medicine;
-use App\Models\Payment;
 use App\Models\Registration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Str;
 
 class MedicalRecordController extends Controller
 {
-    private function calculatePayment($medicalRecord)
-    {
-        $actionCost = $medicalRecord->action ? $medicalRecord->action->biaya : 0;
-        $medicineCost = $medicalRecord->medicine ? $medicalRecord->medicine->harga : 0;
-
-        return $actionCost + $medicineCost;
-    }
     /**
      * Display a listing of the resource.
      */
@@ -66,20 +57,7 @@ class MedicalRecordController extends Controller
 
         $validatedData = $request->validated();
 
-        $medicalRecord = MedicalRecord::create($validatedData);
-
-        $registration = Registration::find($validatedData['registration_id']);
-        if ($registration) {
-            $registration->status = 'selesai';
-            $registration->save();
-        }
-
-        Payment::create([
-            'medicalrecord_id' => $medicalRecord->id,
-            'total' => $this->calculatePayment($medicalRecord),
-            'slug' => Str::random(8),
-            'status' => 'belum lunas',
-        ]);
+        MedicalRecord::create($validatedData);
 
         alert()->success('Buat Data Sukses!', 'Data Layanan Medis telah ditambahkan.');
 

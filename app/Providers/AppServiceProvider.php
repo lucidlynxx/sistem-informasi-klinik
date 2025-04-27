@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\MedicalRecord;
+use App\Observers\MedicalRecordObserver;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -20,6 +22,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        MedicalRecord::observe(MedicalRecordObserver::class);
+
         Gate::define('isAdmin', function ($user) {
             return $user->role === 'admin';
         });
