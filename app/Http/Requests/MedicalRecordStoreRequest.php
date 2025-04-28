@@ -26,6 +26,7 @@ class MedicalRecordStoreRequest extends FormRequest
             'action_id' => 'required|exists:actions,id',
             'medicine_id' => 'required|exists:medicines,id',
             'diagnosa' => 'required|max:255',
+            'jumlah_obat' => 'required|numeric',
             'slug' => 'required|unique:medicalrecords,slug',
             'catatan' => 'nullable|string'
         ];

@@ -108,6 +108,22 @@
                         </div>
                     </div>
 
+                    <div class="mb-3 row">
+                        <label for="jumlah_obat"
+                            class="col-sm-2 col-form-label text-end fw-semibold text-secondary">Jumlah Obat</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control @error('jumlah_obat')
+                                                        is-invalid
+                                                    @enderror" id="jumlah_obat" name="jumlah_obat"
+                                placeholder="Masukkan Diagnosa" value="{{ old('jumlah_obat') }}" required>
+                            @error('jumlah_obat')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                    </div>
+
                     <input type="hidden" class="form-control" id="slug" name="slug" value="{{ old('slug') }}" required>
 
                     <div class="mb-3 row">

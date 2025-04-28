@@ -21,6 +21,7 @@ class MedicalRecordFactory extends Factory
             'registration_id' => $this->faker->numberBetween(1, 100),
             'action_id' => $this->faker->numberBetween(1, 20),
             'medicine_id' => $this->faker->numberBetween(1, 20),
+            'jumlah_obat' => $this->faker->numberBetween(1, 3),
             'diagnosa' => $this->faker->randomElement([
                 'Demam Tinggi',
                 'Batuk Pilek',

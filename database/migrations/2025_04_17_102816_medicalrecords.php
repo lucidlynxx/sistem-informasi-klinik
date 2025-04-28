@@ -23,6 +23,7 @@ return new class extends Migration
                 ->constrained('medicines')
                 ->onDelete('cascade');
             $table->text('diagnosa');
+            $table->integer('jumlah_obat');
             $table->string('slug')->unique();
             $table->text('catatan')->nullable();
             $table->timestamps();

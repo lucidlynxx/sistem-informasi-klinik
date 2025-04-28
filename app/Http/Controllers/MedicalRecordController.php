@@ -41,7 +41,7 @@ class MedicalRecordController extends Controller
 
         $registrations = Registration::where('status', 'menunggu')->get();
         $actions = Action::get();
-        $medicines = Medicine::get();
+        $medicines = Medicine::where('stok', '>', 0)->get();
 
         return view('dashboard.medicalrecord.create', compact('title', 'registrations', 'actions', 'medicines'));
     }
