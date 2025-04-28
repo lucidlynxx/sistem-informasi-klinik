@@ -53,6 +53,16 @@
             }}</span>
     </p>
 
+    <p><strong>Jumlah Obat:</strong>
+        <span class="right">x{{ $payment->medicalrecord->jumlah_obat }}</span>
+    </p>
+
+    <p><strong>Total Harga Obat:</strong>
+        <span class="right">Rp{{ number_format($payment->medicalrecord->medicine->harga *
+            $payment->medicalrecord->jumlah_obat, 0, ',', '.')
+            }}</span>
+    </p>
+
     <div class="line"></div>
 
     <p><strong>Total Tagihan:</strong>
