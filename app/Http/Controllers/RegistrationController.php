@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RegistrationStoreRequest;
-use App\Models\Patient;
 use App\Models\Registration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -111,16 +110,5 @@ class RegistrationController extends Controller
         alert()->success('Ubah Data Sukses!', 'Data Pendaftaran telah diubah.');
 
         return redirect()->route('registrations.index');
-    }
-
-    public function searchPatients(Request $request)
-    {
-        $search = $request->q;
-
-        $results = Patient::where('name', 'like', "%$search%")
-            ->limit(10)
-            ->get(['id', 'name']);
-
-        return response()->json($results);
     }
 }

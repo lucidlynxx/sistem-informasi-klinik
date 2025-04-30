@@ -58,14 +58,6 @@ class RegionController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Region $region)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(Region $region)
@@ -107,11 +99,14 @@ class RegionController extends Controller
         return redirect()->route('regions.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Region $region)
+    public function searchRegions(Request $request)
     {
-        //
+        $search = $request->q;
+
+        $results = Region::where('kota_kabupaten', 'like', "%$search%")
+            ->limit(10)
+            ->get(['id', 'kota_kabupaten']);
+
+        return response()->json($results);
     }
 }

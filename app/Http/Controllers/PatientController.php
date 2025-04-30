@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PatientStoreRequest;
 use App\Models\Patient;
-use App\Models\Region;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -117,13 +116,13 @@ class PatientController extends Controller
         return redirect()->route('patients.index');
     }
 
-    public function searchRegions(Request $request)
+    public function searchPatients(Request $request)
     {
         $search = $request->q;
 
-        $results = Region::where('kota_kabupaten', 'like', "%$search%")
+        $results = Patient::where('name', 'like', "%$search%")
             ->limit(10)
-            ->get(['id', 'kota_kabupaten']);
+            ->get(['id', 'name']);
 
         return response()->json($results);
     }
