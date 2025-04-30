@@ -79,9 +79,7 @@ class PatientController extends Controller
 
         $title = 'Edit Patient';
 
-        $regions = Region::get();
-
-        return view('dashboard.patient.edit', compact('title', 'patient', 'regions'));
+        return view('dashboard.patient.edit', compact('title', 'patient'));
     }
 
     /**
