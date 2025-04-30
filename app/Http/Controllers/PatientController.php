@@ -37,9 +37,7 @@ class PatientController extends Controller
 
         $title = 'Create Patient';
 
-        $regions = Region::get();
-
-        return view('dashboard.patient.create', compact('title', 'regions'));
+        return view('dashboard.patient.create', compact('title'));
     }
 
     /**
@@ -119,5 +117,16 @@ class PatientController extends Controller
         alert()->success('Ubah Data Sukses!', 'Data Pasien telah diubah.');
 
         return redirect()->route('patients.index');
+    }
+
+    public function searchRegions(Request $request)
+    {
+        $search = $request->q;
+
+        $results = Region::where('kota_kabupaten', 'like', "%$search%")
+            ->limit(10)
+            ->get(['id', 'kota_kabupaten']);
+
+        return response()->json($results);
     }
 }

@@ -118,15 +118,11 @@
                             <select class="form-select form-select-sm @error('region_id')
                                                         is-invalid
                                                     @enderror" id="region_id" name="region_id" required>
-                                <option value="">-- Pilih Wilayah --</option>
-                                @foreach ($regions as $region)
-                                @if (old('region_id', $patient->region_id) == $region->id)
-                                <option value="{{ $region->id }}" selected>{{ $region->kota_kabupaten }}
+                                @if (old('region_id', $patient->region_id))
+                                <option value="{{ $patient->region_id }}" selected>{{ $patient->region->kota_kabupaten
+                                    }}
                                 </option>
-                                @else
-                                <option value="{{ $region->id }}">{{ $region->kota_kabupaten }}</option>
                                 @endif
-                                @endforeach
                             </select>
                             @error('region_id')
                             <div class="invalid-feedback">
@@ -187,5 +183,39 @@
             preslug = generateString(8);
             slug.value = preslug.toLowerCase();
         });
+</script>
+@endpush
+@push('select2')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css"
+    rel="stylesheet">
+<script>
+    $(document).ready(function() {
+        $('#region_id').select2({
+        placeholder: 'Cari nama wilayah...',
+        minimumInputLength: 5, // jumlah karakter sebelum pencarian dijalankan
+        theme: 'bootstrap-5',
+            ajax: {
+                url: '/dashboard/searchregions',
+                dataType: 'json',
+                delay: 500,
+                data: function (params) {
+                    return {
+                        q: params.term // query
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        results: data.map(item => ({
+                            id: item.id,
+                            text: item.kota_kabupaten
+                        }))
+                    };
+                },
+                cache: true
+            }
+        });
+    });
 </script>
 @endpush
