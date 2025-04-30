@@ -37,9 +37,7 @@ class RegistrationController extends Controller
 
         $title = 'Create Registration';
 
-        $patients = Patient::get();
-
-        return view('dashboard.registration.create', compact('title', 'patients'));
+        return view('dashboard.registration.create', compact('title'));
     }
 
     /**
@@ -81,9 +79,7 @@ class RegistrationController extends Controller
 
         $title = 'Edit Patient';
 
-        $patients = Patient::get();
-
-        return view('dashboard.registration.edit', compact('title', 'registration', 'patients'));
+        return view('dashboard.registration.edit', compact('title', 'registration'));
     }
 
     /**
@@ -115,5 +111,16 @@ class RegistrationController extends Controller
         alert()->success('Ubah Data Sukses!', 'Data Pendaftaran telah diubah.');
 
         return redirect()->route('registrations.index');
+    }
+
+    public function searchPatients(Request $request)
+    {
+        $search = $request->q;
+
+        $results = Patient::where('name', 'like', "%$search%")
+            ->limit(10)
+            ->get(['id', 'name']);
+
+        return response()->json($results);
     }
 }
