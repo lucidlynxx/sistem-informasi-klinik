@@ -27,10 +27,10 @@ class DashboardController extends Controller
         $totalRegistrations = $result->total;
         $totalRegistrationsWaitingStatus = $result->waiting;
 
-        $sevenDaysAgo = Carbon::now()->subDays(6)->startOfDay();
-        $today = Carbon::now()->endOfDay();
+        $latestDate = Registration::max('tanggal_daftar');
+        $sevenDaysAgo = Carbon::parse($latestDate)->subDays(6)->toDateString();
 
-        $registrationsDate = Registration::whereBetween('tanggal_daftar', [$sevenDaysAgo, $today])
+        $registrationsDate = Registration::whereBetween('tanggal_daftar', [$sevenDaysAgo, $latestDate])
             ->orderBy('tanggal_daftar', 'asc')
             ->get('tanggal_daftar');
 
