@@ -47,15 +47,11 @@
                             <select class="form-select form-select-sm @error('action_id')
                                     is-invalid
                                 @enderror" id="action_id" name="action_id" required>
-                                <option value="">-- Pilih Tindakan --</option>
-                                @foreach ($actions as $act)
-                                @if (old('action_id', $medicalrecord->action_id) == $act->id)
-                                <option value="{{ $act->id }}" selected>{{ $act->tindakan }}
+                                @if (old('action_id', $medicalrecord->action_id))
+                                <option value="{{ $medicalrecord->action_id }}" selected>{{
+                                    $medicalrecord->action->tindakan }}
                                 </option>
-                                @else
-                                <option value="{{ $act->id }}">{{ $act->tindakan }}</option>
                                 @endif
-                                @endforeach
                             </select>
                             @error('action_id')
                             <div class="invalid-feedback">
@@ -206,6 +202,33 @@
                         results: data.map(item => ({
                             id: item.id,
                             text: item.name
+                        }))
+                    };
+                },
+                cache: true
+            }
+        });
+    });
+
+    $(document).ready(function() {
+        $('#action_id').select2({
+        placeholder: 'Cari tindakan...',
+        minimumInputLength: 5, // jumlah karakter sebelum pencarian dijalankan
+        theme: 'bootstrap-5',
+            ajax: {
+                url: '/dashboard/searchactions',
+                dataType: 'json',
+                delay: 500,
+                data: function (params) {
+                    return {
+                        q: params.term // query
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        results: data.map(item => ({
+                            id: item.id,
+                            text: item.tindakan
                         }))
                     };
                 },

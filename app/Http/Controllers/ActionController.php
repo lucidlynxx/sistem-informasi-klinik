@@ -58,14 +58,6 @@ class ActionController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Action $action)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(Action $action)
@@ -108,11 +100,14 @@ class ActionController extends Controller
         return redirect()->route('actions.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Action $action)
+    public function searchActions(Request $request)
     {
-        //
+        $search = $request->q;
+
+        $results = Action::where('tindakan', 'like', "%$search%")
+            ->limit(10)
+            ->get(['id', 'tindakan']);
+
+        return response()->json($results);
     }
 }

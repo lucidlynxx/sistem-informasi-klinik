@@ -39,10 +39,9 @@ class MedicalRecordController extends Controller
 
         $title = 'Create Medical Record';
 
-        $actions = Action::get();
         $medicines = Medicine::where('stok', '>', 0)->get();
 
-        return view('dashboard.medicalrecord.create', compact('title', 'actions', 'medicines'));
+        return view('dashboard.medicalrecord.create', compact('title', 'medicines'));
     }
 
     /**
@@ -84,10 +83,9 @@ class MedicalRecordController extends Controller
 
         $title = 'Edit Medical Record';
 
-        $actions = Action::get();
         $medicines = Medicine::get();
 
-        return view('dashboard.medicalrecord.edit', compact('title', 'actions', 'medicines', 'medicalrecord'));
+        return view('dashboard.medicalrecord.edit', compact('title', 'medicines', 'medicalrecord'));
     }
 
     /**
