@@ -111,4 +111,25 @@ class RegistrationController extends Controller
 
         return redirect()->route('registrations.index');
     }
+
+    public function searchRegistrations(Request $request)
+    {
+        $search = $request->q;
+
+        $results = Registration::where('status', 'menunggu')
+            ->whereHas('patient', function ($query) use ($search) {
+                $query->where('name', 'like', "%$search%");
+            })
+            ->orderBy('tanggal_daftar', 'desc') // urutkan dari yang terbaru
+            ->limit(10)
+            ->get()
+            ->map(function ($registration) {
+                return [
+                    'id' => $registration->id,                 // ID dari registrations
+                    'name' => $registration->patient->name     // Nama dari patients
+                ];
+            });
+
+        return response()->json($results);
+    }
 }

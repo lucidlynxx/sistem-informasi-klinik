@@ -43,6 +43,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/dashboard/payments/{payment:slug}',  [PaymentController::class, 'printPayment'])->name('payments.print');
     Route::get('/dashboard/searchregions',  [RegionController::class, 'searchRegions'])->name('regions.search');
     Route::get('/dashboard/searchpatients',  [PatientController::class, 'searchPatients'])->name('patients.search');
+    Route::get('/dashboard/searchregistrations',  [RegistrationController::class, 'searchRegistrations'])->name('registrations.search');
 
     Route::post('/logout', [AuthenticationController::class, 'logout'])->name('logout');
 });
