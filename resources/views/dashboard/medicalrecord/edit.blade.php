@@ -69,14 +69,11 @@
                                     is-invalid
                                 @enderror" id="medicine_id" name="medicine_id" required>
                                 <option value="">-- Pilih Obat --</option>
-                                @foreach ($medicines as $med)
-                                @if (old('medicine_id', $medicalrecord->medicine_id) == $med->id)
-                                <option value="{{ $med->id }}" selected>{{ $med->nama_obat }}
+                                @if (old('medicine_id', $medicalrecord->medicine_id))
+                                <option value="{{ $medicalrecord->medicine_id }}" selected>{{
+                                    $medicalrecord->medicine->nama_obat }}
                                 </option>
-                                @else
-                                <option value="{{ $med->id }}">{{ $med->nama_obat }}</option>
                                 @endif
-                                @endforeach
                             </select>
                             @error('medicine_id')
                             <div class="invalid-feedback">
@@ -229,6 +226,33 @@
                         results: data.map(item => ({
                             id: item.id,
                             text: item.tindakan
+                        }))
+                    };
+                },
+                cache: true
+            }
+        });
+    });
+
+    $(document).ready(function() {
+        $('#medicine_id').select2({
+        placeholder: 'Cari obat...',
+        minimumInputLength: 5, // jumlah karakter sebelum pencarian dijalankan
+        theme: 'bootstrap-5',
+            ajax: {
+                url: '/dashboard/searchmedicines',
+                dataType: 'json',
+                delay: 500,
+                data: function (params) {
+                    return {
+                        q: params.term // query
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        results: data.map(item => ({
+                            id: item.id,
+                            text: item.nama_obat
                         }))
                     };
                 },

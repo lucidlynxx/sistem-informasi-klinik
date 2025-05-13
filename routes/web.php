@@ -45,6 +45,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/dashboard/searchpatients', [PatientController::class, 'searchPatients'])->name('patients.search');
     Route::get('/dashboard/searchregistrations', [RegistrationController::class, 'searchRegistrations'])->name('registrations.search');
     Route::get('/dashboard/searchactions', [ActionController::class, 'searchActions'])->name('actions.search');
+    Route::get('/dashboard/searchmedicines', [MedicineController::class, 'searchMedicines'])->name('medicines.search');
 
     Route::post('/logout', [AuthenticationController::class, 'logout'])->name('logout');
 });

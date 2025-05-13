@@ -3,10 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\MedicalRecordStoreRequest;
-use App\Models\Action;
 use App\Models\MedicalRecord;
-use App\Models\Medicine;
-use App\Models\Registration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -39,9 +36,7 @@ class MedicalRecordController extends Controller
 
         $title = 'Create Medical Record';
 
-        $medicines = Medicine::where('stok', '>', 0)->get();
-
-        return view('dashboard.medicalrecord.create', compact('title', 'medicines'));
+        return view('dashboard.medicalrecord.create', compact('title'));
     }
 
     /**
@@ -83,9 +78,7 @@ class MedicalRecordController extends Controller
 
         $title = 'Edit Medical Record';
 
-        $medicines = Medicine::get();
-
-        return view('dashboard.medicalrecord.edit', compact('title', 'medicines', 'medicalrecord'));
+        return view('dashboard.medicalrecord.edit', compact('title', 'medicalrecord'));
     }
 
     /**

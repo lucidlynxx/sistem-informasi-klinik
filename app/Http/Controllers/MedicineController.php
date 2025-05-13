@@ -58,14 +58,6 @@ class MedicineController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Medicine $medicine)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(Medicine $medicine)
@@ -110,11 +102,15 @@ class MedicineController extends Controller
         return redirect()->route('medicines.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Medicine $medicine)
+    public function searchMedicines(Request $request)
     {
-        //
+        $search = $request->q;
+
+        $results = Medicine::where('stok', '>', 0)
+            ->where('nama_obat', 'like', "%$search%")
+            ->limit(10)
+            ->get(['id', 'nama_obat']);
+
+        return response()->json($results);
     }
 }
