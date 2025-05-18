@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <table id="example" class="table table-hover">
+                <table id="employee-table" class="table table-hover">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -34,26 +34,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($employees as $employee)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $employee->nama }}</td>
-                            <td>{{ $employee->jabatan }}</td>
-                            <td>{{ Str::mask($employee->nip, '*', -8) }}</td>
-                            <td>{{ Str::mask($employee->no_hp, '*', -6) }}</td>
-                            <td>
-                                <div class="btn-group-sm" role="group">
-                                    <a href="{{ route('employees.show', $employee->slug) }}" class="btn btn-success"><i
-                                            class="bi bi-eye-fill"></i>
-                                        Detail</a>
-                                    <a href="{{ route('employees.edit', $employee->slug) }}" class="btn btn-warning"><i
-                                            class="bi bi-pen"></i>
-                                        Ubah</a>
-                                    @livewire('employee-alert', ['employeeId' => $employee->id])
-                                </div>
-                            </td>
-                        </tr>
-                        @endforeach
                     </tbody>
                     <tfoot>
                         <tr>
@@ -71,3 +51,61 @@
     </div>
 </main>
 @endsection
+
+@push('yajra')
+<script type="text/javascript">
+    $(function () {
+          
+      var table = $('#employee-table').DataTable({
+          processing: true,
+          serverSide: true,
+          ajax: "{{ route('employees.index') }}",
+          columns: [
+            { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+            { data: 'nama', name: 'nama' },
+            { data: 'jabatan', name: 'jabatan' },
+            { data: 'Nip', name: 'Nip' },
+            { data: 'No_hp', name: 'No_hp' },
+            { data: 'Aksi', name: 'Aksi', orderable: false, searchable: false }
+          ]
+      });
+          
+    });
+
+    $(document).ready(function () {
+        // Tombol delete
+        $('#employee-table').on('click', '.btn-delete', function () {
+            const slug = $(this).data('slug');
+            Swal.fire({
+                title: 'Yakin ingin menghapus?',
+                text: "Data tidak bisa dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: `/dashboard/employees/${slug}`,
+                        type: 'DELETE',
+                        data: {
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function (response) {
+                            if (response.success) {
+                                Swal.fire('Terhapus!', response.message, 'success');
+                                $('#employee-table').DataTable().ajax.reload(null, false);
+                            }
+                        },
+                        error: function () {
+                            Swal.fire('Gagal!', 'Data tidak bisa dihapus.', 'error');
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
+@endpush

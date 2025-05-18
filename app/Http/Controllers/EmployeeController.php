@@ -6,23 +6,56 @@ use App\Http\Requests\EmployeeStoreRequest;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
+use Yajra\DataTables\DataTables;
 
 class EmployeeController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         if (!Gate::allows('isAdmin')) {
             abort(403);
         }
 
+        if ($request->ajax()) {
+
+            $employees = Employee::latest()->get();
+
+            return DataTables::of($employees)
+                ->addIndexColumn()
+                ->setRowId('id')
+                ->addColumn('Nip', function ($row) {
+                    return Str::mask($row->nip, '*', -8);
+                })
+                ->addColumn('No_hp', function ($row) {
+                    return Str::mask($row->no_hp, '*', -6);
+                })
+                ->addColumn('Aksi', function ($row) {
+                    $detailUrl = route('employees.show', $row->slug);
+                    $editUrl = route('employees.edit', $row->slug);
+
+                    return '<div class="btn-group-sm" role="group">
+                                <a href="' . $detailUrl . '"
+                                    class="btn btn-success"><i class="bi bi-eye-fill"></i>
+                                    Detail</a>
+                                <a href="' . $editUrl . '"
+                                    class="btn btn-warning"><i class="bi bi-pen"></i>
+                                    Ubah</a>
+                                <button class="btn btn-danger btn-delete" data-slug="' . $row->slug . '">
+                                    <i class="bi bi-trash"></i> Hapus
+                                </button>
+                            </div>';
+                })
+                ->rawColumns(['Aksi']) // penting agar HTML tidak di-escape
+                ->make(true);
+        }
+
         $title = 'Employee List';
 
-        $employees = Employee::latest()->take(100)->get();
-
-        return view('dashboard.employee.index', compact('title', 'employees'));
+        return view('dashboard.employee.index', compact('title'));
     }
 
     /**
@@ -112,5 +145,14 @@ class EmployeeController extends Controller
         alert()->success('Ubah Data Sukses!', 'Data Pegawai telah diubah.');
 
         return redirect()->route('employees.index');
+    }
+
+    public function destroy($slug)
+    {
+        $user = Employee::where('slug', $slug)->firstOrFail();
+
+        $user->delete();
+
+        return response()->json(['success' => true, 'message' => 'Data berhasil dihapus.']);
     }
 }
