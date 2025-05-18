@@ -30,7 +30,7 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     Route::resource('/dashboard/users', UserController::class)->except(['show']);
-    Route::resource('/dashboard/regions', RegionController::class)->except(['show', 'destroy']);
+    Route::resource('/dashboard/regions', RegionController::class)->except(['show']);
     Route::resource('/dashboard/employees', EmployeeController::class);
     Route::resource('/dashboard/medicines', MedicineController::class)->except(['show', 'destroy']);
     Route::resource('/dashboard/actions', ActionController::class)->except(['show', 'destroy']);

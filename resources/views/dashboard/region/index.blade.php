@@ -21,7 +21,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <table id="example" class="table table-hover">
+                <table id="region-table" class="table table-hover">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -30,20 +30,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($regions as $region)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $region->kota_kabupaten }}</td>
-                            <td>
-                                <div class="btn-group-sm" role="group">
-                                    <a href="{{ route('regions.edit', $region->slug) }}" class="btn btn-warning"><i
-                                            class="bi bi-pen"></i>
-                                        Ubah</a>
-                                    @livewire('region-alert', ['regionId' => $region->id])
-                                </div>
-                            </td>
-                        </tr>
-                        @endforeach
                     </tbody>
                     <tfoot>
                         <tr>
@@ -58,3 +44,58 @@
     </div>
 </main>
 @endsection
+
+@push('yajra')
+<script type="text/javascript">
+    $(function () {
+          
+      var table = $('#region-table').DataTable({
+          processing: true,
+          serverSide: true,
+          ajax: "{{ route('regions.index') }}",
+          columns: [
+            { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+            { data: 'kota_kabupaten', name: 'kota_kabupaten' },
+            { data: 'Aksi', name: 'Aksi', orderable: false, searchable: false }
+          ]
+      });
+          
+    });
+
+    $(document).ready(function () {
+        // Tombol delete
+        $('#region-table').on('click', '.btn-delete', function () {
+            const slug = $(this).data('slug');
+            Swal.fire({
+                title: 'Yakin ingin menghapus?',
+                text: "Data tidak bisa dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: `/dashboard/regions/${slug}`,
+                        type: 'DELETE',
+                        data: {
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function (response) {
+                            if (response.success) {
+                                Swal.fire('Terhapus!', response.message, 'success');
+                                $('#region-table').DataTable().ajax.reload(null, false);
+                            }
+                        },
+                        error: function () {
+                            Swal.fire('Gagal!', 'Data tidak bisa dihapus.', 'error');
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
+@endpush
