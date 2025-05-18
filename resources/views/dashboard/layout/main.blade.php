@@ -53,6 +53,7 @@
     @stack('delete')
     @stack('chart')
     @stack('select2')
+    @stack('yajra')
 </body>
 
 </html>

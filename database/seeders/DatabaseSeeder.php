@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
             MedicalRecordSeeder::class
         ]);
 
-        Registration::factory(100)->create();
-        MedicalRecord::factory(100)->create();
+        Registration::factory(550)->create();
+        MedicalRecord::factory(250)->create();
     }
 }

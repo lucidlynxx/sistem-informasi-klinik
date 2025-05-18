@@ -6,23 +6,58 @@ use App\Http\Requests\RegistrationStoreRequest;
 use App\Models\Registration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Yajra\DataTables\DataTables;
 
 class RegistrationController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         if (!Gate::allows('isPetugasPendaftaran')) {
             abort(403);
         }
 
+        if ($request->ajax()) {
+
+            $registrations = Registration::latest()->get();
+
+            return Datatables::of($registrations)
+                ->addIndexColumn()
+                ->setRowId('id')
+                ->addColumn('Pasien', function ($row) {
+                    return $row->patient->name;
+                })
+                ->addColumn('Wilayah', function ($row) {
+                    return $row->patient->region->kota_kabupaten;
+                })
+                ->addColumn('Tgl Daftar', function ($row) {
+                    return date('d M y', strtotime($row->tanggal_daftar));
+                })
+                ->addColumn('Aksi', function ($row) {
+                    $detailUrl = route('registrations.show', $row->slug);
+                    $editUrl = route('registrations.edit', $row->slug);
+
+                    return '<div class="btn-group-sm" role="group">
+                                <a href="' . $detailUrl . '"
+                                    class="btn btn-success"><i class="bi bi-eye-fill"></i>
+                                    Detail</a>
+                                <a href="' . $editUrl . '"
+                                    class="btn btn-warning"><i class="bi bi-pen"></i>
+                                    Ubah</a>
+                                <button class="btn btn-danger btn-delete" data-slug="' . $row->slug . '">
+                                    <i class="bi bi-trash"></i> Hapus
+                                </button>
+                            </div>';
+                })
+                ->rawColumns(['Aksi']) // penting agar HTML tidak di-escape
+                ->make(true);
+        }
+
         $title = 'Registration List';
 
-        $registrations = Registration::latest()->take(100)->get();
-
-        return view('dashboard.registration.index', compact('title', 'registrations'));
+        return view('dashboard.registration.index', compact('title'));
     }
 
     /**
@@ -131,5 +166,14 @@ class RegistrationController extends Controller
             });
 
         return response()->json($results);
+    }
+
+    public function destroy($slug)
+    {
+        $registration = Registration::where('slug', $slug)->firstOrFail();
+
+        $registration->delete();
+
+        return response()->json(['success' => true, 'message' => 'Data berhasil dihapus.']);
     }
 }
