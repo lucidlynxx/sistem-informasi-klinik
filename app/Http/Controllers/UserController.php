@@ -7,23 +7,45 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
+use Yajra\DataTables\DataTables;
 
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         if (!Gate::allows('isAdmin')) {
             abort(403);
         }
 
+        if ($request->ajax()) {
+
+            $users = User::latest()->get();
+
+            return DataTables::of($users)
+                ->addIndexColumn()
+                ->setRowId('id')
+                ->addColumn('Aksi', function ($row) {
+                    $editUrl = route('users.edit', $row->slug);
+
+                    return '<div class="btn-group-sm" role="group">
+                                <a href="' . $editUrl . '"
+                                    class="btn btn-warning"><i class="bi bi-pen"></i>
+                                    Ubah</a>
+                                <button class="btn btn-danger btn-delete" data-slug="' . $row->slug . '">
+                                    <i class="bi bi-trash"></i> Hapus
+                                </button>
+                            </div>';
+                })
+                ->rawColumns(['Aksi']) // penting agar HTML tidak di-escape
+                ->make(true);
+        }
+
         $title = 'User List';
 
-        $users = User::latest()->take(100)->get();
-
-        return view('dashboard.user.index', compact('title', 'users'));
+        return view('dashboard.user.index', compact('title'));
     }
 
     /**
@@ -59,11 +81,6 @@ class UserController extends Controller
 
         return back();
     }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(User $user) {}
 
     /**
      * Show the form for editing the specified resource.
@@ -113,8 +130,12 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy($slug)
     {
-        //
+        $user = User::where('slug', $slug)->firstOrFail();
+
+        $user->delete();
+
+        return response()->json(['success' => true, 'message' => 'Data berhasil dihapus.']);
     }
 }

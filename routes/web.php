@@ -29,7 +29,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/dashboard', 'index')->name('dashboard');
     });
 
-    Route::resource('/dashboard/users', UserController::class)->except(['show', 'destroy']);
+    Route::resource('/dashboard/users', UserController::class)->except(['show']);
     Route::resource('/dashboard/regions', RegionController::class)->except(['show', 'destroy']);
     Route::resource('/dashboard/employees', EmployeeController::class)->except(['destroy']);
     Route::resource('/dashboard/medicines', MedicineController::class)->except(['show', 'destroy']);
