@@ -6,23 +6,59 @@ use App\Http\Requests\PatientStoreRequest;
 use App\Models\Patient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
+use Yajra\DataTables\DataTables;
 
 class PatientController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         if (!Gate::allows('isPetugasPendaftaran')) {
             abort(403);
         }
 
+        if ($request->ajax()) {
+
+            $patients = Patient::latest()->get();
+
+            return DataTables::of($patients)
+                ->addIndexColumn()
+                ->setRowId('id')
+                ->addColumn('Tgl lahir', function ($row) {
+                    return date('d M Y', strtotime($row->tanggal_lahir));
+                })
+                ->addColumn('Wilayah', function ($row) {
+                    return $row->region->kota_kabupaten;
+                })
+                ->addColumn('No_hp', function ($row) {
+                    return Str::mask($row->no_hp, '*', -6);
+                })
+                ->addColumn('Aksi', function ($row) {
+                    $detailUrl = route('patients.show', $row->slug);
+                    $editUrl = route('patients.edit', $row->slug);
+
+                    return '<div class="btn-group-sm" role="group">
+                                <a href="' . $detailUrl . '"
+                                    class="btn btn-success"><i class="bi bi-eye-fill"></i>
+                                    Detail</a>
+                                <a href="' . $editUrl . '"
+                                    class="btn btn-warning"><i class="bi bi-pen"></i>
+                                    Ubah</a>
+                                <button class="btn btn-danger btn-delete" data-slug="' . $row->slug . '">
+                                    <i class="bi bi-trash"></i> Hapus
+                                </button>
+                            </div>';
+                })
+                ->rawColumns(['Aksi']) // penting agar HTML tidak di-escape
+                ->make(true);
+        }
+
         $title = 'Patient List';
 
-        $patients = Patient::latest()->take(100)->get();
-
-        return view('dashboard.patient.index', compact('title', 'patients'));
+        return view('dashboard.patient.index', compact('title'));
     }
 
     /**
@@ -125,5 +161,14 @@ class PatientController extends Controller
             ->get(['id', 'name']);
 
         return response()->json($results);
+    }
+
+    public function destroy($slug)
+    {
+        $patient = Patient::where('slug', $slug)->firstOrFail();
+
+        $patient->delete();
+
+        return response()->json(['success' => true, 'message' => 'Data berhasil dihapus.']);
     }
 }

@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <table id="example" class="table table-hover">
+                <table id="patient-table" class="table table-hover">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -35,27 +35,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($patients as $patient)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $patient->name }}</td>
-                            <td>{{ date('d M Y', strtotime($patient->tanggal_lahir)); }}</td>
-                            <td>{{ $patient->jenis_kelamin }}</td>
-                            <td>{{ $patient->region->kota_kabupaten }}</td>
-                            <td>{{ Str::mask($patient->no_hp, '*', -6) }}</td>
-                            <td>
-                                <div class="btn-group-sm" role="group">
-                                    <a href="{{ route('patients.show', $patient->slug) }}" class="btn btn-success"><i
-                                            class="bi bi-eye-fill"></i>
-                                        Detail</a>
-                                    <a href="{{ route('patients.edit', $patient->slug) }}" class="btn btn-warning"><i
-                                            class="bi bi-pen"></i>
-                                        Ubah</a>
-                                    @livewire('patient-alert', ['patientId' => $patient->id])
-                                </div>
-                            </td>
-                        </tr>
-                        @endforeach
                     </tbody>
                     <tfoot>
                         <tr>
@@ -74,3 +53,62 @@
     </div>
 </main>
 @endsection
+
+@push('yajra')
+<script type="text/javascript">
+    $(function () {
+          
+      var table = $('#patient-table').DataTable({
+          processing: true,
+          serverSide: true,
+          ajax: "{{ route('patients.index') }}",
+          columns: [
+            { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+            { data: 'name', name: 'name' },
+            { data: 'Tgl lahir', name: 'Tgl lahir' },
+            { data: 'jenis_kelamin', name: 'jenis_kelamin' },
+            { data: 'Wilayah', name: 'Wilayah' },
+            { data: 'No_hp', name: 'No_hp' },
+            { data: 'Aksi', name: 'Aksi', orderable: false, searchable: false }
+          ]
+      });
+          
+    });
+
+    $(document).ready(function () {
+        // Tombol delete
+        $('#patient-table').on('click', '.btn-delete', function () {
+            const slug = $(this).data('slug');
+            Swal.fire({
+                title: 'Yakin ingin menghapus?',
+                text: "Data tidak bisa dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: `/dashboard/patients/${slug}`,
+                        type: 'DELETE',
+                        data: {
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function (response) {
+                            if (response.success) {
+                                Swal.fire('Terhapus!', response.message, 'success');
+                                $('#patient-table').DataTable().ajax.reload(null, false);
+                            }
+                        },
+                        error: function () {
+                            Swal.fire('Gagal!', 'Data tidak bisa dihapus.', 'error');
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
+@endpush
