@@ -61,7 +61,7 @@
             </div>
         </div>
 
-        <a href="{{ route('registrations.index') }}" class="btn btn-danger btn-sm"><i class="bi bi-arrow-left"></i>
+        <a href="{{ route('registrations.index') }}" class="btn btn-danger btn-sm mb-3"><i class="bi bi-arrow-left"></i>
             Kembali</a>
     </div>
 </main>
