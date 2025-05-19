@@ -6,23 +6,48 @@ use App\Http\Requests\MedicineStoreRequest;
 use App\Models\Medicine;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Yajra\DataTables\DataTables;
 
 class MedicineController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         if (!Gate::allows('isDokter')) {
             abort(403);
         }
 
+        if ($request->ajax()) {
+
+            $medicines = Medicine::latest()->get();
+
+            return DataTables::of($medicines)
+                ->addIndexColumn()
+                ->setRowId('id')
+                ->addColumn('Harga', function ($row) {
+                    return number_format($row->harga, 0, ',', '.');
+                })
+                ->addColumn('Aksi', function ($row) {
+                    $editUrl = route('medicines.edit', $row->slug);
+
+                    return '<div class="btn-group-sm" role="group">
+                                <a href="' . $editUrl . '"
+                                    class="btn btn-warning"><i class="bi bi-pen"></i>
+                                    Ubah</a>
+                                <button class="btn btn-danger btn-delete" data-slug="' . $row->slug . '">
+                                    <i class="bi bi-trash"></i> Hapus
+                                </button>
+                            </div>';
+                })
+                ->rawColumns(['Aksi']) // penting agar HTML tidak di-escape
+                ->make(true);
+        }
+
         $title = 'Medicine List';
 
-        $medicines = Medicine::latest()->take(100)->get();
-
-        return view('dashboard.medicine.index', compact('title', 'medicines'));
+        return view('dashboard.medicine.index', compact('title'));
     }
 
     /**
@@ -112,5 +137,14 @@ class MedicineController extends Controller
             ->get(['id', 'nama_obat']);
 
         return response()->json($results);
+    }
+
+    public function destroy($slug)
+    {
+        $medicine = Medicine::where('slug', $slug)->firstOrFail();
+
+        $medicine->delete();
+
+        return response()->json(['success' => true, 'message' => 'Data berhasil dihapus.']);
     }
 }

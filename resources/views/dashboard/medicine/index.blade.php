@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <table id="example" class="table table-hover">
+                <table id="medicine-table" class="table table-hover">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -34,23 +34,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($medicines as $medicine)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $medicine->nama_obat }}</td>
-                            <td>{{ $medicine->satuan }}</td>
-                            <td>Rp{{ number_format($medicine->harga, 0, ',', '.') }}</td>
-                            <td>{{ $medicine->stok }}</td>
-                            <td>
-                                <div class="btn-group-sm" role="group">
-                                    <a href="{{ route('medicines.edit', $medicine->slug) }}" class="btn btn-warning"><i
-                                            class="bi bi-pen"></i>
-                                        Ubah</a>
-                                    @livewire('medicine-alert', ['medicineId' => $medicine->id])
-                                </div>
-                            </td>
-                        </tr>
-                        @endforeach
                     </tbody>
                     <tfoot>
                         <tr>
@@ -68,3 +51,61 @@
     </div>
 </main>
 @endsection
+
+@push('yajra')
+<script type="text/javascript">
+    $(function () {
+          
+      var table = $('#medicine-table').DataTable({
+          processing: true,
+          serverSide: true,
+          ajax: "{{ route('medicines.index') }}",
+          columns: [
+            { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+            { data: 'nama_obat', name: 'nama_obat' },
+            { data: 'satuan', name: 'satuan' },
+            { data: 'Harga', name: 'Harga' },
+            { data: 'stok', name: 'stok' },
+            { data: 'Aksi', name: 'Aksi', orderable: false, searchable: false }
+          ]
+      });
+          
+    });
+
+    $(document).ready(function () {
+        // Tombol delete
+        $('#medicine-table').on('click', '.btn-delete', function () {
+            const slug = $(this).data('slug');
+            Swal.fire({
+                title: 'Yakin ingin menghapus?',
+                text: "Data tidak bisa dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: `/dashboard/medicines/${slug}`,
+                        type: 'DELETE',
+                        data: {
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function (response) {
+                            if (response.success) {
+                                Swal.fire('Terhapus!', response.message, 'success');
+                                $('#medicine-table').DataTable().ajax.reload(null, false);
+                            }
+                        },
+                        error: function () {
+                            Swal.fire('Gagal!', 'Data tidak bisa dihapus.', 'error');
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
+@endpush
