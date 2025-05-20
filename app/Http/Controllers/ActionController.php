@@ -6,23 +6,56 @@ use App\Http\Requests\ActionStoreRequest;
 use App\Models\Action;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
+use Yajra\DataTables\DataTables;
 
 class ActionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         if (!Gate::allows('isDokter')) {
             abort(403);
         }
 
+        if ($request->ajax()) {
+
+            $actions = Action::latest()->get();
+
+            return DataTables::of($actions)
+                ->addIndexColumn()
+                ->setRowId('id')
+                ->addColumn('Biaya', function ($row) {
+                    return number_format($row->biaya, 0, ',', '.');
+                })
+                ->addColumn('Keterangan', function ($row) {
+                    return Str::words($row->keterangan, 3, '...');
+                })
+                ->addColumn('Aksi', function ($row) {
+                    $detailUrl = route('actions.show', $row->slug);
+                    $editUrl = route('actions.edit', $row->slug);
+
+                    return '<div class="btn-group-sm" role="group">
+                                <a href="' . $detailUrl . '"
+                                    class="btn btn-success"><i class="bi bi-eye-fill"></i>
+                                    Detail</a>
+                                <a href="' . $editUrl . '"
+                                    class="btn btn-warning"><i class="bi bi-pen"></i>
+                                    Ubah</a>
+                                <button class="btn btn-danger btn-delete" data-slug="' . $row->slug . '">
+                                    <i class="bi bi-trash"></i> Hapus
+                                </button>
+                            </div>';
+                })
+                ->rawColumns(['Aksi']) // penting agar HTML tidak di-escape
+                ->make(true);
+        }
+
         $title = 'Action List';
 
-        $actions = Action::latest()->take(100)->get();
-
-        return view('dashboard.action.index', compact('title', 'actions'));
+        return view('dashboard.action.index', compact('title'));
     }
 
     /**
@@ -55,6 +88,13 @@ class ActionController extends Controller
         alert()->success('Buat Data Sukses!', 'Data Tindakan telah ditambahkan.');
 
         return back();
+    }
+
+    public function show(Action $action)
+    {
+        $title = 'Show Patient';
+
+        return view('dashboard.action.show', compact('title', 'action'));
     }
 
     /**
@@ -109,5 +149,14 @@ class ActionController extends Controller
             ->get(['id', 'tindakan']);
 
         return response()->json($results);
+    }
+
+    public function destroy($slug)
+    {
+        $action = Action::where('slug', $slug)->firstOrFail();
+
+        $action->delete();
+
+        return response()->json(['success' => true, 'message' => 'Data berhasil dihapus.']);
     }
 }
