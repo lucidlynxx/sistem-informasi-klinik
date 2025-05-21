@@ -6,23 +6,58 @@ use App\Http\Requests\MedicalRecordStoreRequest;
 use App\Models\MedicalRecord;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Yajra\DataTables\DataTables;
 
 class MedicalRecordController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         if (!Gate::allows('isDokter')) {
             abort(403);
         }
 
+        if ($request->ajax()) {
+
+            $medicalrecords = MedicalRecord::latest()->get();
+
+            return DataTables::of($medicalrecords)
+                ->addIndexColumn()
+                ->setRowId('id')
+                ->addColumn('Pasien', function ($row) {
+                    return $row->registration->patient->name;
+                })
+                ->addColumn('Tindakan', function ($row) {
+                    return $row->action->tindakan;
+                })
+                ->addColumn('Obat', function ($row) {
+                    return $row->medicine->nama_obat;
+                })
+                ->addColumn('Aksi', function ($row) {
+                    $detailUrl = route('medicalrecords.show', $row->slug);
+                    $editUrl = route('medicalrecords.edit', $row->slug);
+
+                    return '<div class="btn-group-sm" role="group">
+                                <a href="' . $detailUrl . '"
+                                    class="btn btn-success mb-1"><i class="bi bi-eye-fill"></i>
+                                    Detail</a>
+                                <a href="' . $editUrl . '"
+                                    class="btn btn-warning mb-1"><i class="bi bi-pen"></i>
+                                    Ubah</a>
+                                <button class="btn btn-danger mb-1 btn-delete" data-slug="' . $row->slug . '">
+                                    <i class="bi bi-trash"></i> Hapus
+                                </button>
+                            </div>';
+                })
+                ->rawColumns(['Aksi']) // penting agar HTML tidak di-escape
+                ->make(true);
+        }
+
         $title = 'Medical Record List';
 
-        $medicalRecords = MedicalRecord::latest()->take(100)->get();
-
-        return view('dashboard.medicalrecord.index', compact('title', 'medicalRecords'));
+        return view('dashboard.medicalrecord.index', compact('title'));
     }
 
     /**
@@ -111,5 +146,14 @@ class MedicalRecordController extends Controller
         alert()->success('Ubah Data Sukses!', 'Data Layanan Medis telah diubah.');
 
         return redirect()->route('medicalrecords.index');
+    }
+
+    public function destroy($slug)
+    {
+        $medicalrecord = MedicalRecord::where('slug', $slug)->firstOrFail();
+
+        $medicalrecord->delete();
+
+        return response()->json(['success' => true, 'message' => 'Data berhasil dihapus.']);
     }
 }

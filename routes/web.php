@@ -37,7 +37,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('/dashboard/patients', PatientController::class);
     Route::resource('/dashboard/registrations', RegistrationController::class);
-    Route::resource('/dashboard/medicalrecords', MedicalRecordController::class)->except(['destroy']);
+    Route::resource('/dashboard/medicalrecords', MedicalRecordController::class);
     Route::resource('/dashboard/payments', PaymentController::class)->only(['index', 'update']);
 
     Route::get('/dashboard/payments/{payment:slug}', [PaymentController::class, 'printPayment'])->name('payments.print');
