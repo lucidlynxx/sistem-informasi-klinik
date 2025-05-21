@@ -27,7 +27,8 @@ class MedicineController extends Controller
                 ->addIndexColumn()
                 ->setRowId('id')
                 ->addColumn('Harga', function ($row) {
-                    return number_format($row->harga, 0, ',', '.');
+                    $formatRp = number_format($row->harga, 0, ',', '.');
+                    return "Rp$formatRp";
                 })
                 ->addColumn('Aksi', function ($row) {
                     $editUrl = route('medicines.edit', $row->slug);

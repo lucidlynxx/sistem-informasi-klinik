@@ -23,7 +23,7 @@
                     </tr>
                     <tr>
                         <th>Biaya</th>
-                        <td>: {{ number_format($action->biaya, 0, ',', '.'); }}</td>
+                        <td>: Rp{{ number_format($action->biaya, 0, ',', '.'); }}</td>
                     </tr>
                     <tr>
                         <th>Keterangan</th>

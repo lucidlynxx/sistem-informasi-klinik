@@ -28,7 +28,8 @@ class ActionController extends Controller
                 ->addIndexColumn()
                 ->setRowId('id')
                 ->addColumn('Biaya', function ($row) {
-                    return number_format($row->biaya, 0, ',', '.');
+                    $formatRp = number_format($row->biaya, 0, ',', '.');
+                    return "Rp$formatRp";
                 })
                 ->addColumn('Keterangan', function ($row) {
                     return Str::words($row->keterangan, 3, '...');
