@@ -15,7 +15,7 @@
                 Daftar Pembayaran
             </div>
             <div class="card-body">
-                <table id="example" class="table table-hover">
+                <table id="payments-table" class="table table-hover">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -28,37 +28,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($payments as $payment)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $payment->medicalrecord->registration->patient->name }}</td>
-                            <td>{{ $payment->medicalrecord->action->tindakan }} (Rp{{
-                                number_format($payment->medicalrecord->action->biaya, 0, ',', '.') }})</td>
-                            <td>{{ $payment->medicalrecord->medicine->nama_obat }} (Rp{{
-                                number_format($payment->medicalrecord->medicine->harga, 0, ',', '.') }})</td>
-                            <td>Rp{{ number_format($payment->total, 0, ',', '.') }}</td>
-                            <td>{{ $payment->status }}</td>
-                            <td>
-                                <div class="btn-group-sm" role="group">
-                                    @if ($payment->status == 'belum lunas')
-                                    <form action="{{ route('payments.update', $payment->slug) }}" method="POST"
-                                        enctype="multipart/form-data">
-                                        @method('put')
-                                        @csrf
-                                        <input type="hidden" class="form-control" id="slug" name="slug"
-                                            value="{{ $payment->slug }}" required>
-                                        <button type="submit" class="btn btn-success btn-sm">
-                                            Selesaikan Transaksi</button>
-                                    </form>
-                                    @elseif ($payment->status == 'lunas')
-                                    <a href="{{ route('payments.print', $payment->slug) }}" target="_blank"
-                                        class="btn btn-primary btn-sm">Cetak
-                                        Receipt</a>
-                                    @endif
-                                </div>
-                            </td>
-                        </tr>
-                        @endforeach
                     </tbody>
                     <tfoot>
                         <tr>
@@ -77,3 +46,26 @@
     </div>
 </main>
 @endsection
+
+@push('yajra')
+<script type="text/javascript">
+    $(function () {
+          
+      var table = $('#payments-table').DataTable({
+          processing: true,
+          serverSide: true,
+          ajax: "{{ route('payments.index') }}",
+          columns: [
+            { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+            { data: 'Pasien', name: 'Pasien' },
+            { data: 'Layanan', name: 'Layanan' },
+            { data: 'Obat', name: 'Obat' },
+            { data: 'Total', name: 'Total' },
+            { data: 'status', name: 'status' },
+            { data: 'Aksi', name: 'Aksi', orderable: false, searchable: false }
+          ]
+      });
+          
+    });
+</script>
+@endpush
