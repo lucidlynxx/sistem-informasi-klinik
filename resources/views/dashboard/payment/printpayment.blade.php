@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Struk Tagihan</title>
+    <title>Struk Tagihan {{ $payment->medicalrecord->registration->patient->name }} | Sistem Informasi Klinik</title>
     <style>
         body {
             font-family: 'Courier New', Courier, monospace;
