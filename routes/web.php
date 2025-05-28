@@ -8,6 +8,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\MedicalRecordController;
 use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\PatientController;
+use App\Http\Controllers\PatientQueueController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\RegistrationController;
@@ -41,6 +42,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('/dashboard/payments', PaymentController::class)->only(['index', 'update']);
 
     Route::get('/dashboard/payments/{payment:slug}', [PaymentController::class, 'printPayment'])->name('payments.print');
+
+    Route::get('/dashboard/patientqueue', [PatientQueueController::class, 'index'])->name('patientqueue.index');
+    Route::get('/dashboard/patientqueue/process/{registration:slug}', [PatientQueueController::class, 'processingPatientQueue'])->name('patientqueue.process');
+
     Route::get('/dashboard/searchregions', [RegionController::class, 'searchRegions'])->name('regions.search');
     Route::get('/dashboard/searchpatients', [PatientController::class, 'searchPatients'])->name('patients.search');
     Route::get('/dashboard/searchregistrations', [RegistrationController::class, 'searchRegistrations'])->name('registrations.search');

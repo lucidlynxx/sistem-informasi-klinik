@@ -53,6 +53,11 @@
                 @endcan
                 @can('isDokter')
                 <div class="sb-sidenav-menu-heading">Transaksi</div>
+                <a class="nav-link {{ Request::is('dashboard/patientqueue') ? 'active' : '' }}"
+                    href="{{ route('patientqueue.index') }}">
+                    <div class="sb-nav-link-icon"><i class="bi bi-people"></i></div>
+                    Antrian Pasien
+                </a>
                 <a class="nav-link {{ Request::is('dashboard/medicalrecords') ? 'active' : '' }}"
                     href="{{ route('medicalrecords.index') }}">
                     <div class="sb-nav-link-icon"><i class="bi bi-prescription2"></i></div>
